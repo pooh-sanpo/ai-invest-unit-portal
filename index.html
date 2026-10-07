@@ -270,6 +270,19 @@
       const href = url || ("https://finance.yahoo.co.jp/quote/" + code);
       return `<a href="${href}" target="_blank" rel="noopener">${name || code}</a>`;
     };
+    const nameIndex = {};
+    (window.STATE.search_index || []).forEach(row => {
+      if (row && row[0]) nameIndex[row[0]] = row[1] || "";
+    });
+    const stockLabel = (code, name) => {
+      const raw = String(code || "");
+      const short = raw.replace(/\.T$/i, "");
+      let shown = name || "";
+      if (!shown || shown === raw || shown === short) {
+        shown = nameIndex[raw] || nameIndex[short + ".T"] || "";
+      }
+      return shown ? (short + " " + shown) : short;
+    };
     const META = [
       { id: "macro", name: "マクロアナリスト", color: "#38bdf8" },
       { id: "technical", name: "テクニカルアナリスト", color: "#a78bfa" },
@@ -407,7 +420,7 @@
       document.getElementById("intelMarket").textContent = `地合い ${m.regime || "-"} · 走査 ${m.universe || "-"}銘柄 · 候補 ${((day.review && day.review.length) || (m.top_candidates || []).length)}件`;
       const names = (day.review && day.review.length) ? day.review : (m.top_candidates || []);
       document.getElementById("intelTop").innerHTML = names.map(c =>
-        `<li><span>${ylink(c.code, c.name, c.yahoo_url)}</span><span class="muted">${c.score}点 ${c.outcome || ""}</span></li>`
+        `<li><span>${ylink(c.code, stockLabel(c.code, c.name), c.yahoo_url)}</span><span class="muted">${c.score}点 ${c.outcome || ""}</span></li>`
       ).join("") || "<li class='muted'>なし</li>";
       document.getElementById("intelX").textContent = x.summary || "";
       const themeSel = document.getElementById("xThemeFilter");
@@ -418,7 +431,7 @@
       const theme = themeSel.value;
       const xitems = (x.items || []).filter(it => !theme || it.theme === theme);
       document.getElementById("intelXItems").innerHTML = xitems.length ? xitems.map(it =>
-        `<li><span>${ylink(it.code, it.name, it.yahoo_url)}</span><span class="muted">${it.theme} · ${it.count}件</span></li>`
+        `<li><span>${ylink(it.code, stockLabel(it.code, it.name), it.yahoo_url)}</span><span class="muted">${it.theme} · ${it.count}件</span></li>`
       ).join("") : "<li class='muted'>なし</li>";
     };
     reviewBody.onclick = (e) => {
