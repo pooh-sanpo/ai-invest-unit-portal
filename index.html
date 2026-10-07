@@ -45,6 +45,9 @@
     .dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 8px; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.buys th:nth-child(n+4), table.buys td:nth-child(n+4) {
+      white-space: nowrap; text-align: right; padding-left: 12px;
+    }
     th { text-align: left; color: #94a3b8; font-weight: 500; padding: 8px 0; }
     td { padding: 10px 0; border-top: 1px solid #1e293b; vertical-align: top; }
     .pos { color: #34d399; }
@@ -98,7 +101,7 @@
       <article class="card">
         <h2>売買履歴 <span class="muted" id="buyCount"></span></h2>
         <div style="overflow:auto;max-height:32rem">
-          <table>
+          <table class="buys">
             <thead><tr><th>約定</th><th>売買</th><th>銘柄</th><th>株数</th><th>値段</th><th>状態</th></tr></thead>
             <tbody id="buyBody"></tbody>
           </table>
@@ -266,6 +269,7 @@
       svg.onmouseleave = () => tip.setAttribute("visibility", "hidden");
     }
     const yen = (n) => (n == null || n === "") ? "-" : Math.floor(Number(n)).toLocaleString("ja-JP") + "円";
+    const num = (n) => (n == null || n === "") ? "-" : Math.floor(Number(n)).toLocaleString("ja-JP");
     const ylink = (code, name, url) => {
       const href = url || ("https://finance.yahoo.co.jp/quote/" + code);
       return `<a href="${href}" target="_blank" rel="noopener">${name || code}</a>`;
@@ -353,7 +357,7 @@
     purchaseRows.sort((a, b) => String(b.at).localeCompare(String(a.at)));
     document.getElementById("buyCount").textContent = "全" + purchaseRows.length + "件";
     document.getElementById("buyBody").innerHTML = purchaseRows.length ? purchaseRows.map(r =>
-      `<tr><td>${r.at || "-"}</td><td>${r.side}</td><td>${ylink(r.code, r.name, r.yahoo_url)}<div class="muted">${r.code || ""}</div></td><td>${r.shares ?? "-"}</td><td>${yen(r.price)}</td><td class="muted">${r.state}</td></tr>`
+      `<tr><td>${r.at || "-"}</td><td>${r.side}</td><td>${ylink(r.code, r.name, r.yahoo_url)}<div class="muted">${r.code || ""}</div></td><td>${num(r.shares)}</td><td>${yen(r.price)}</td><td class="muted">${r.state}</td></tr>`
     ).join("") : `<tr><td colspan="6" class="muted">売買履歴なし</td></tr>`;
     const votes = (last.bull && last.bull.votes) || {};
     const cands = (last.technical && last.technical.candidates) || [];
