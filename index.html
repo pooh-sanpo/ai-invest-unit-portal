@@ -64,6 +64,10 @@
       .kpis, .agents, .grid2, .charts { grid-template-columns: 1fr; }
       header { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
+    .books { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+    @media (max-width: 640px) {
+      .books { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -93,7 +97,7 @@
     </section>
     <h2 style="margin-top:24px">5人のエージェント</h2>
     <section class="agents" id="agents"></section>
-    <section class="grid2">
+    <section class="grid2 books">
       <article class="card">
         <h2>保有ポジション</h2>
         <table><thead><tr><th>銘柄</th><th>株数</th><th>取得</th><th>現在<div id="priceAt" class="muted"></div></th><th>損益</th></tr></thead><tbody id="posBody"></tbody></table>
@@ -102,7 +106,7 @@
         <h2>売買履歴 <span class="muted" id="buyCount"></span></h2>
         <div style="overflow:auto;max-height:32rem">
           <table class="buys">
-            <thead><tr><th>約定</th><th>売買</th><th>銘柄</th><th>株数</th><th>値段</th><th>状態</th></tr></thead>
+            <thead><tr><th>約定</th><th>売買</th><th>銘柄</th><th>株数 × 値段</th><th>金額</th><th>状態</th></tr></thead>
             <tbody id="buyBody"></tbody>
           </table>
         </div>
@@ -270,6 +274,14 @@
     }
     const yen = (n) => (n == null || n === "") ? "-" : Math.floor(Number(n)).toLocaleString("ja-JP") + "円";
     const num = (n) => (n == null || n === "") ? "-" : Math.floor(Number(n)).toLocaleString("ja-JP");
+    const deal = (shares, price) => {
+      if (shares == null || shares === "" || price == null || price === "") return "-";
+      return num(shares) + " × " + yen(price);
+    };
+    const amount = (shares, price) => {
+      if (shares == null || shares === "" || price == null || price === "") return "-";
+      return yen(Number(shares) * Number(price));
+    };
     const ylink = (code, name, url) => {
       const href = url || ("https://finance.yahoo.co.jp/quote/" + code);
       return `<a href="${href}" target="_blank" rel="noopener">${name || code}</a>`;
@@ -357,7 +369,7 @@
     purchaseRows.sort((a, b) => String(b.at).localeCompare(String(a.at)));
     document.getElementById("buyCount").textContent = "全" + purchaseRows.length + "件";
     document.getElementById("buyBody").innerHTML = purchaseRows.length ? purchaseRows.map(r =>
-      `<tr><td>${r.at || "-"}</td><td>${r.side}</td><td>${ylink(r.code, r.name, r.yahoo_url)}<div class="muted">${r.code || ""}</div></td><td>${num(r.shares)}</td><td>${yen(r.price)}</td><td class="muted">${r.state}</td></tr>`
+      `<tr><td>${r.at || "-"}</td><td>${r.side}</td><td>${ylink(r.code, r.name, r.yahoo_url)}<div class="muted">${r.code || ""}</div></td><td>${deal(r.shares, r.price)}</td><td>${amount(r.shares, r.price)}</td><td class="muted">${r.state}</td></tr>`
     ).join("") : `<tr><td colspan="6" class="muted">売買履歴なし</td></tr>`;
     const votes = (last.bull && last.bull.votes) || {};
     const cands = (last.technical && last.technical.candidates) || [];
