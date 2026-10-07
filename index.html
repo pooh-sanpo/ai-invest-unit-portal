@@ -20,6 +20,13 @@
       gap: 12px; position: relative;
     }
     h1 { font-size: 16px; margin: 0; }
+    .switch { display: flex; gap: 6px; margin: 8px 0 4px; }
+    .switch a {
+      font-size: 12px; line-height: 1; text-decoration: none; color: #94a3b8;
+      border: 1px solid #334155; border-radius: 999px;
+      padding: 5px 12px; background: #0f172a;
+    }
+    .switch a.on { color: #e2e8f0; border-color: #94a3b8; background: #1e293b; }
     .sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
     .badge {
       font-size: 11px; padding: 4px 10px; border-radius: 999px;
@@ -60,11 +67,15 @@
   <header>
     <div>
       <h1>5エージェント自動投資単元</h1>
+      <nav class="switch" aria-label="台帳">
+        <a href="https://pooh-sanpo.github.io/ai-invest-s-portal/">S株</a>
+        <a class="on" aria-current="page" href="https://pooh-sanpo.github.io/ai-invest-unit-portal/">単元</a>
+      </nav>
       <div class="sub" id="sub">単元100株 · 元手100,000万円 · 2026-10-07開始</div>
     </div>
-    <div>
+    <div style="position:relative">
       <input id="stockSearch" type="search" placeholder="銘柄名・コードで検索" style="background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:6px 10px;width:220px">
-      <div id="searchResults" style="display:none;position:absolute;right:24px;top:58px;width:360px;max-height:320px;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:10px;z-index:20"></div>
+      <div id="searchResults" style="display:none;position:absolute;right:0;top:calc(100% + 4px);width:360px;max-height:320px;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:10px;z-index:20"></div>
     </div>
   </header>
   <main>
