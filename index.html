@@ -281,7 +281,8 @@
       if (!shown || shown === raw || shown === short) {
         shown = nameIndex[raw] || nameIndex[short + ".T"] || "";
       }
-      return shown ? (short + " " + shown) : short;
+      const ticker = short ? (short + ".T") : raw;
+      return shown ? (ticker + " " + shown) : ticker;
     };
     const META = [
       { id: "macro", name: "マクロアナリスト", color: "#38bdf8" },
