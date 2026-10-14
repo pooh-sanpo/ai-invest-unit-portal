@@ -80,9 +80,24 @@
       </nav>
       <div class="sub" id="sub">単元100株 · 元手7万円 · 2026-10-07開始</div>
     </div>
-    <div style="position:relative">
-      <input id="stockSearch" type="search" placeholder="銘柄名・コードで検索" style="background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:6px 10px;width:220px">
-      <div id="searchResults" style="display:none;position:absolute;right:0;top:calc(100% + 4px);width:360px;max-height:320px;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:10px;z-index:20"></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+      <label style="font-size:12px;color:#e2e8f0;display:flex;align-items:center;gap:8px">
+        賛同パターン
+        <select id="patternFilter" style="background:#1e293b;border:1px solid #e2e8f0;color:#e2e8f0;border-radius:8px;padding:8px 12px;font-size:14px;min-width:220px">
+          <option value="">7パターンの成績</option>
+          <option value="Claude単独">Claude単独</option>
+          <option value="Agy単独">Agy単独</option>
+          <option value="Grok単独">Grok単独</option>
+          <option value="Claude+Agy">Claude+Agy</option>
+          <option value="Claude+Grok">Claude+Grok</option>
+          <option value="Agy+Grok">Agy+Grok</option>
+          <option value="Claude+Agy+Grok">Claude+Agy+Grok</option>
+        </select>
+      </label>
+      <div style="position:relative">
+        <input id="stockSearch" type="search" placeholder="銘柄名・コードで検索" style="background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:6px 10px;width:220px">
+        <div id="searchResults" style="display:none;position:absolute;right:0;top:calc(100% + 4px);width:360px;max-height:320px;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:10px;z-index:30"></div>
+      </div>
     </div>
   </header>
   <main>
@@ -92,6 +107,11 @@
       <article class="card"><div class="label">保有</div><div class="value" id="posCount">-</div></article>
       <article class="card"><div class="label">開始来収支</div><div class="value" id="pnlTotal">-</div><div class="muted" id="pnlDetail"></div></article>
     </section>
+    <article class="card" id="patternCard" style="margin-top:12px">
+      <h2>賛同パターン</h2>
+      <p class="muted" id="patternNote">上のプルダウンで切り替えます。決済済みだけを集計します。Agy単独、Grok単独、Agy+Grok は Claude が買っていないため件数は出ません。</p>
+      <div id="patternStats"></div>
+    </article>
     <section class="charts">
       <article class="card"><svg id="chartBalance" viewBox="0 0 720 200"></svg></article>
     </section>
@@ -112,23 +132,6 @@
         </div>
       </article>
     </section>
-    <article class="card" id="patternCard" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-        <h2>賛同パターン</h2>
-        <select id="patternFilter" style="background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:6px;padding:4px 8px">
-          <option value="">7パターンの成績</option>
-          <option value="Claude単独">Claude単独</option>
-          <option value="Agy単独">Agy単独</option>
-          <option value="Grok単独">Grok単独</option>
-          <option value="Claude+Agy">Claude+Agy</option>
-          <option value="Claude+Grok">Claude+Grok</option>
-          <option value="Agy+Grok">Agy+Grok</option>
-          <option value="Claude+Agy+Grok">Claude+Agy+Grok</option>
-        </select>
-      </div>
-      <p class="muted" id="patternNote">決済済みの売買だけを集計します。Agy単独、Grok単独、Agy+Grok は、Claude が買っていないため件数は出ません。</p>
-      <div id="patternStats"></div>
-    </article>
     <article class="card" id="jointDecisionCard" style="margin-top:12px;border:1px solid #0284c7;background:#031326">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
         <h2 style="color:#38bdf8">🤝 Grok × Agy 共同合議</h2>
