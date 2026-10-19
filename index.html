@@ -92,6 +92,7 @@
           <option value="Claude+Grok">Claude+Grok</option>
           <option value="Agy+Grok">Agy+Grok</option>
           <option value="Claude+Agy+Grok">Claude+Agy+Grok</option>
+          <option value="多数決(2/3以上一致)">多数決(2/3以上一致)</option>
         </select>
       </label>
       <div style="position:relative">
@@ -446,7 +447,7 @@
       return patternFrom(!!claude, a, g);
     };
     const closedTrades = (p.trade_history || []).filter(t => t && t.profit != null);
-    const patternNames = ["Claude単独", "Agy単独", "Grok単独", "Claude+Agy", "Claude+Grok", "Agy+Grok", "Claude+Agy+Grok"];
+    const patternNames = ["Claude単独", "Agy単独", "Grok単独", "Claude+Agy", "Claude+Grok", "Agy+Grok", "Claude+Agy+Grok", "多数決(2/3以上一致)"];
     const patternLine = (name, rows) => {
       const n = rows.length;
       const wins = rows.filter(t => Number(t.profit) > 0).length;
