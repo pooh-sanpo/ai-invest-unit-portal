@@ -105,7 +105,7 @@
     </section>
     <article class="card" id="patternCard" style="margin-top:12px">
       <h2>単独台帳</h2>
-      <p class="muted" id="patternNote">上のプルダウンで、この成績と、グラフ、保有、売買履歴、合議、検討履歴を切り替えます。残っているのはClaude・Agy・Grokの単独だけです。Claude単独は実台帳です。Agy単独とGrok単独は2026-10-16開始の仮想台帳で、他者と重なっても各自の買いを取ります。</p>
+      <p class="muted" id="patternNote">Claude、Agy、Grok は同じペーパー台帳です。現金と保有は混ぜません。上のプルダウンで、成績、グラフ、保有、売買履歴を切り替えます。</p>
       <div id="patternStats"></div>
     </article>
     <section class="charts">
@@ -600,7 +600,7 @@
         document.getElementById("equity").textContent = yen(vEquity);
         document.getElementById("cash").textContent = yen(lastRow ? lastRow.cash : vCash);
         setPnl(vPnl);
-        document.getElementById("pnlDetail").textContent = selected + " 仮想 開始 2026-10-16";
+        document.getElementById("pnlDetail").textContent = selected + " 開始 2026-10-16";
         if (!series.length) {
           showChartMessage("このパターンの売買はまだありません");
         } else {
